@@ -88,12 +88,14 @@ export default function Home() {
         </section>
 
         <section>
-          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-3">Architectural layers</h2>
+          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-1.5">Architectural layers</h2>
+          <p className="text-sm text-smoke mb-3">Are these layers AI-Native, or Legacy?</p>
           <LayerSelector layers={layers} onChange={setLayers} />
         </section>
 
         <section>
-          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-3">Autonomy level</h2>
+          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-1.5">Autonomy level</h2>
+          <p className="text-sm text-smoke mb-3">The balance between AI &amp; humans.</p>
           <AutonomySelector autonomy={autonomy} onChange={setAutonomy} />
         </section>
 
