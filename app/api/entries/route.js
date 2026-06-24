@@ -1,9 +1,11 @@
-import { kv } from "@vercel/kv";
+import { getRedisClient } from "@/lib/redis";
 
 const KEY = "community_entries";
 
 export async function GET() {
-  const entries = (await kv.get(KEY)) || [];
+  const redis = await getRedisClient();
+  const raw = await redis.get(KEY);
+  const entries = raw ? JSON.parse(raw) : [];
   return Response.json({ entries });
 }
 
@@ -38,11 +40,13 @@ export async function POST(request) {
     return Response.json({ ok: false, error: "autonomy must be between 1 and 3" }, { status: 400 });
   }
 
-  const existing = (await kv.get(KEY)) || [];
+  const redis = await getRedisClient();
+  const raw = await redis.get(KEY);
+  const existing = raw ? JSON.parse(raw) : [];
   const entry = { name, stackDepth, surfaceCoverage, autonomy, archetype };
   const next = [entry, ...existing].slice(0, 5);
 
-  await kv.set(KEY, next);
+  await redis.set(KEY, JSON.stringify(next));
 
   return Response.json({ ok: true });
 }
