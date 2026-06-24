@@ -63,17 +63,18 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12 flex-1">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Architecture Taxonomy</h1>
-        <p className="text-gray-600">
+    <main className="relative z-10 max-w-5xl mx-auto px-6 py-16 flex-1 w-full">
+      <header className="mb-10">
+        <div className="text-xs font-mono uppercase tracking-[0.18em] text-dim mb-3">Taxonomy</div>
+        <h1 className="font-display text-3xl md:text-4xl text-paper leading-snug mb-2">AI Architecture Taxonomy</h1>
+        <p className="text-smoke text-[15px] leading-relaxed max-w-2xl">
           Identify which of nine AI system archetypes describes your product, and where it sits in a 3D classification space.
         </p>
       </header>
 
-      <div className="space-y-8">
+      <div className="space-y-10">
         <section>
-          <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label htmlFor="productName" className="block text-xs font-mono uppercase tracking-wide text-dim mb-2">
             Product name
           </label>
           <input
@@ -82,17 +83,17 @@ export default function Home() {
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             placeholder="e.g. My AI Product"
-            className="w-full max-w-md rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full max-w-md rounded-md border border-hairline bg-panel px-3 py-2 text-sm text-paper placeholder:text-dormant focus:outline-none focus:ring-2 focus:ring-brass/40 focus:border-brass"
           />
         </section>
 
         <section>
-          <h2 className="text-sm font-semibold text-gray-700 mb-2">Architectural layers</h2>
+          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-3">Architectural layers</h2>
           <LayerSelector layers={layers} onChange={setLayers} />
         </section>
 
         <section>
-          <h2 className="text-sm font-semibold text-gray-700 mb-2">Autonomy level</h2>
+          <h2 className="text-xs font-mono uppercase tracking-wide text-dim mb-3">Autonomy level</h2>
           <AutonomySelector autonomy={autonomy} onChange={setAutonomy} />
         </section>
 
@@ -125,10 +126,10 @@ export default function Home() {
           )}
         </section>
 
-        <section>
+        <section className="bg-panel border border-hairline rounded-2xl p-6 md:p-8">
           <Chart3D seeds={SEEDS} communityEntries={communityEntries} userEntry={userEntry} />
 
-          <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
+          <div className="flex flex-wrap gap-4 mt-4 text-sm text-dim">
             <LegendItem color="#1D9E75" label="Commander" />
             <LegendItem color="#BA7517" label="Navigator" />
             <LegendItem color="#E24B4A" label="Autopilot" />
@@ -138,7 +139,7 @@ export default function Home() {
         </section>
       </div>
 
-      <footer className="mt-16 pt-6 border-t border-gray-200 text-sm text-gray-500">
+      <footer className="mt-16 pt-6 border-t border-hairline text-sm text-dim">
         A taxonomy by David Facer · davidfacer.com
       </footer>
     </main>

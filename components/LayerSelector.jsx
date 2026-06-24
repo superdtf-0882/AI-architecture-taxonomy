@@ -36,10 +36,10 @@ export default function LayerSelector({ layers, onChange }) {
               title={layer.desc}
               className={`px-4 py-2 rounded-md text-sm font-medium border transition-colors ${
                 locked
-                  ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                  ? "bg-panel text-dormant border-hairline cursor-not-allowed"
                   : active
-                    ? "bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                    ? "bg-[#185FA5] text-white border-[#185FA5] hover:bg-[#134a82]"
+                    : "bg-panel text-smoke border-hairline hover:border-dormant"
               }`}
             >
               {layer.label}
@@ -48,7 +48,7 @@ export default function LayerSelector({ layers, onChange }) {
         })}
       </div>
       {warning && (
-        <p className="mt-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
+        <p className="mt-2 text-sm text-brass bg-brass/10 border border-brass/40 rounded-md px-3 py-2">
           P-02: Arch = 1 requires Engine = 1. Engine has been set automatically.
         </p>
       )}
