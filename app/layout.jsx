@@ -16,7 +16,20 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans text-smoke">{children}</body>
+      <body className="min-h-full flex flex-col font-sans text-smoke">
+        <a
+          href="https://davidfacer.com/"
+          className="fixed top-6 left-6 z-20 flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+        >
+          <img
+            src="/HeadshotBW.jpg"
+            alt=""
+            className="w-9 h-11 rounded-lg object-cover object-[center_30%] border border-hairline"
+          />
+          <span className="font-sans text-sm text-dim tracking-wide">David Facer</span>
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

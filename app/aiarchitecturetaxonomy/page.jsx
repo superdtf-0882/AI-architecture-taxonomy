@@ -63,7 +63,7 @@ export default function Home() {
   }
 
   return (
-    <main className="relative z-10 max-w-5xl mx-auto px-6 py-16 flex-1 w-full">
+    <main className="relative z-10 max-w-5xl mx-auto px-6 py-28 flex-1 w-full">
       <header className="mb-10">
         <div className="text-xs font-mono uppercase tracking-[0.18em] text-dim mb-3">Taxonomy</div>
         <h1 className="font-display text-3xl md:text-4xl text-paper leading-snug mb-2">AI Architecture Taxonomy</h1>

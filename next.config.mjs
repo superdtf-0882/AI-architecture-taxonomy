@@ -13,15 +13,19 @@ const nextConfig = {
       },
     ];
   },
-  // The taxonomy app used to live at this project's bare root
-  // (ai-architecture-taxonomy.vercel.app/) before WP2b nested it under
-  // /aiarchitecturetaxonomy/. Redirect old links/bookmarks to the new
-  // canonical domain rather than letting them 404.
+  // This project's bare root has no landing page of its own — it hosts two
+  // tools (the taxonomy and the maturity assessment) with no natural single
+  // "home". Redirect to the EA hub page on the main site instead, so visitors
+  // get a place to choose rather than being dropped into one tool arbitrarily.
+  // This also covers ai-architecture-taxonomy.vercel.app/ (where the taxonomy
+  // used to live directly before WP2b nested it under /aiarchitecturetaxonomy/)
+  // since it's the same deployment — old bookmarks land on the EA hub instead
+  // of a 404.
   async redirects() {
     return [
       {
         source: '/',
-        destination: 'https://aisdlc.davidfacer.com/aiarchitecturetaxonomy/',
+        destination: 'https://davidfacer.com/professional/enterprise-architecture/',
         permanent: true,
       },
     ];
