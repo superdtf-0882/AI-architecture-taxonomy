@@ -21,7 +21,7 @@ export default function Home() {
   const [addState, setAddState] = useState("idle"); // idle | added
 
   useEffect(() => {
-    fetch("/api/entries")
+    fetch("/api/entries/")
       .then((res) => res.json())
       .then((data) => setCommunityEntries(data.entries || []))
       .catch(() => setCommunityEntries([]));
@@ -41,7 +41,7 @@ export default function Home() {
   async function handleAddToCommunity() {
     if (!hasScoredEntry) return;
 
-    const res = await fetch("/api/entries", {
+    const res = await fetch("/api/entries/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,7 +55,7 @@ export default function Home() {
     const data = await res.json();
 
     if (data.ok) {
-      const refreshed = await fetch("/api/entries").then((r) => r.json());
+      const refreshed = await fetch("/api/entries/").then((r) => r.json());
       setCommunityEntries(refreshed.entries || []);
       setAddState("added");
       setTimeout(() => setAddState("idle"), 2000);
