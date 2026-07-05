@@ -13,6 +13,19 @@ const nextConfig = {
       },
     ];
   },
+  // The taxonomy app used to live at this project's bare root
+  // (ai-architecture-taxonomy.vercel.app/) before WP2b nested it under
+  // /aiarchitecturetaxonomy/. Redirect old links/bookmarks to the new
+  // canonical domain rather than letting them 404.
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: 'https://aisdlc.davidfacer.com/aiarchitecturetaxonomy/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
