@@ -65,7 +65,13 @@ export default function Home() {
   return (
     <main className="relative z-10 max-w-5xl mx-auto px-6 py-28 flex-1 w-full">
       <header className="mb-10">
-        <div className="text-xs font-mono uppercase tracking-[0.18em] text-dim mb-3">Taxonomy</div>
+        <div className="text-xs font-mono uppercase tracking-[0.18em] text-dim mb-3">
+          <a href="https://davidfacer.com/professional/enterprise-architecture/" className="hover:text-brass transition-colors duration-200">
+            Enterprise Architecture
+          </a>
+          <span className="mx-2 opacity-40">/</span>
+          <span>Taxonomy</span>
+        </div>
         <h1 className="font-display text-3xl md:text-4xl text-paper leading-snug mb-2">AI Architecture Taxonomy</h1>
         <p className="text-smoke text-[15px] leading-relaxed max-w-2xl">
           Identify which of nine AI system archetypes describes your product, and where it sits in a 3D classification space.
@@ -113,7 +119,7 @@ export default function Home() {
             type="button"
             onClick={handleAddToCommunity}
             disabled={!hasScoredEntry}
-            className="px-4 py-2 rounded-md text-sm font-medium bg-[#7B61FF] text-white hover:bg-[#6a4fe0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium bg-[#277eb8] text-white hover:bg-[#1f6493] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {addState === "added" ? "Added ✓" : "Add to community chart"}
           </button>
@@ -136,7 +142,7 @@ export default function Home() {
             <LegendItem color="#BA7517" label="Navigator" />
             <LegendItem color="#E24B4A" label="Autopilot" />
             <LegendItem color="#185FA5" label="Your entry" outline />
-            <LegendItem color="#7B61FF" label="Community entries" />
+            <LegendItem color="#277eb8" label="Community entries" />
           </div>
         </section>
       </div>
@@ -144,6 +150,15 @@ export default function Home() {
       <footer className="mt-16 pt-6 border-t border-hairline text-sm text-dim">
         A taxonomy by David Facer · davidfacer.com
       </footer>
+
+      <p className="mt-8 text-center">
+        <a
+          href="https://davidfacer.com/professional/enterprise-architecture/"
+          className="text-dim text-sm hover:text-brass transition-colors duration-200"
+        >
+          ← Enterprise Architecture
+        </a>
+      </p>
     </main>
   );
 }

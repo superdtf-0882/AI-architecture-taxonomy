@@ -58,6 +58,14 @@
 </head>
 <body class="font-sans text-smoke min-h-screen relative overflow-x-hidden">
 
+<!-- Executive Readout generation modal -->
+<div id="readout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#277eb8;color:white;border-radius:16px;padding:40px 48px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div style="font-size:18px;font-weight:600;font-family:'Inter',system-ui,sans-serif;margin-bottom:20px;">Creating Executive Readout</div>
+    <div id="readout-modal-message" style="font-size:14px;font-family:'Inter',system-ui,sans-serif;color:rgba(255,255,255,0.9);min-height:20px;transition:opacity 0.4s ease;opacity:0;"></div>
+  </div>
+</div>
+
 <!-- Background field -->
 <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
   <svg class="absolute w-full h-full" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -127,12 +135,12 @@
           <span id="progress-label" style="color:#868C97;font-size:13px;font-family:'JetBrains Mono',monospace;flex-shrink:0;">0 / 13</span>
         </div>
         <button id="download-btn" onclick="downloadMd()" disabled
-          style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#1D9E75;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
+          style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#277eb8;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
           Download .md
         </button>
         <button id="diagnostic-btn" onclick="tryDiagnostic()" disabled
-          style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#7B61FF;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
-          Try Our Diagnostic →
+          style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#926318;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
+          Executive Readout →
         </button>
       </div>
 
@@ -317,7 +325,7 @@ const SCORE_MAP = { A: 1, B: 2, C: 3, D: 4, E: 5 };
 const LEVEL_META = { A: 'Initial', B: 'Managed', C: 'Defined', D: 'Quantitatively Managed', E: 'Optimising' };
 
 let scores = {};
-let selectedDim = null;
+let selectedDim = "D1";
 let radarChart = null;
 
 function escHtml(str) {
@@ -562,12 +570,59 @@ function downloadMd() {
   a.click();
 }
 
+const READOUT_MESSAGES = [
+  'calculating dimensions',
+  'mapping investment concentration',
+  'measuring adjacent maturities',
+  'relationships between dimensions',
+  'estimating organizational stage',
+  'identifying strategic priorities',
+  'identifying delivery bottlenecks',
+  'organizational strengths',
+  'maturity distribution',
+  'forming executive POV',
+  'evaluating dimensional relationships'
+];
+const READOUT_FADE_MS = 400;
+
+let readoutMessageIndex = 0;
+let readoutMessageTimer = null;
+
+function showReadoutModal() {
+  readoutMessageIndex = 0;
+  const msgEl = document.getElementById('readout-modal-message');
+  document.getElementById('readout-modal').style.display = 'flex';
+  msgEl.textContent = READOUT_MESSAGES[0];
+  msgEl.style.opacity = '1';
+  scheduleNextReadoutMessage();
+}
+
+function scheduleNextReadoutMessage() {
+  const isLast = readoutMessageIndex >= READOUT_MESSAGES.length - 1;
+  if (isLast) return; // hold on the final message until the request resolves
+  const holdMs = 2000 + Math.random() * 2000; // 2-4s
+  readoutMessageTimer = setTimeout(() => {
+    const msgEl = document.getElementById('readout-modal-message');
+    msgEl.style.opacity = '0';
+    setTimeout(() => {
+      readoutMessageIndex++;
+      msgEl.textContent = READOUT_MESSAGES[readoutMessageIndex];
+      msgEl.style.opacity = '1';
+      scheduleNextReadoutMessage();
+    }, READOUT_FADE_MS);
+  }, holdMs);
+}
+
+function hideReadoutModal() {
+  clearTimeout(readoutMessageTimer);
+  document.getElementById('readout-modal').style.display = 'none';
+}
+
 async function tryDiagnostic() {
   const btn = document.getElementById('diagnostic-btn');
-  const originalLabel = btn.textContent;
   btn.disabled = true;
   btn.style.cursor = 'not-allowed';
-  btn.textContent = 'Generating…';
+  showReadoutModal();
 
   try {
     const res = await fetch('/api/diagnostic/', {
@@ -577,18 +632,18 @@ async function tryDiagnostic() {
     });
     const data = await res.json();
     if (!res.ok) {
+      hideReadoutModal();
       alert(data.error || 'Something went wrong generating the readout.');
       btn.disabled = false;
       btn.style.cursor = 'pointer';
-      btn.textContent = originalLabel;
       return;
     }
-    window.location.href = `/diagnostic/?hash=${data.hash}`;
+    window.location.href = `/executivereadout/?hash=${data.hash}`;
   } catch (err) {
+    hideReadoutModal();
     alert('Network error — please try again.');
     btn.disabled = false;
     btn.style.cursor = 'pointer';
-    btn.textContent = originalLabel;
   }
 }
 

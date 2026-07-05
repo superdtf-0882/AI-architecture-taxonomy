@@ -1,6 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+
+function LinkIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  );
+}
 
 // The approved prompt (EXECUTIVE_READOUT_PROMPT_V1) instructs the model to end
 // its own output with the "This Executive Readout provides..." attribution
@@ -24,12 +34,24 @@ const markdownComponents = {
 };
 
 export default function ReadoutView({ readout, hash }) {
+  const [copied, setCopied] = useState(false);
+
   function handleDownload() {
     const a = Object.assign(document.createElement("a"), {
       href: URL.createObjectURL(new Blob([buildDownloadMd(readout)], { type: "text/markdown" })),
       download: "sdlc-executive-readout.md",
     });
     a.click();
+  }
+
+  async function handleCopyUrl() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable — silently no-op rather than error.
+    }
   }
 
   return (
@@ -46,14 +68,31 @@ export default function ReadoutView({ readout, hash }) {
         <button
           type="button"
           onClick={handleDownload}
-          className="px-4 py-2 rounded-md text-sm font-medium bg-[#7B61FF] text-white hover:bg-[#6a4fe0] transition-colors"
+          className="px-4 py-2 rounded-md text-sm font-medium bg-[#277eb8] text-white hover:bg-[#1f6493] transition-colors"
         >
           Download Executive Readout
+        </button>
+        <button
+          type="button"
+          onClick={handleCopyUrl}
+          className="px-4 py-2 rounded-md text-sm font-medium bg-[#277eb8] text-white hover:bg-[#1f6493] transition-colors inline-flex items-center gap-2"
+        >
+          <LinkIcon />
+          {copied ? "Copied!" : "Copy This URL"}
         </button>
         <a href="/maturitymodelassessment/" className="text-sm text-dim hover:text-brass transition-colors">
           Run another assessment →
         </a>
       </div>
+
+      <a
+        href="https://github.com/superdtf-0882/ai-native-sdlc-maturity-model"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 text-xs text-dim hover:text-brass transition-colors"
+      >
+        AI-Native SDLC Maturity Model © 2026 David Facer CC BY 4.0
+      </a>
     </main>
   );
 }

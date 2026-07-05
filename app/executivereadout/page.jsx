@@ -22,6 +22,15 @@ export default async function DiagnosticPage({ searchParams }) {
           <a href="/maturitymodelassessment/" className="text-brass hover:underline text-sm">
             Run a new assessment →
           </a>
+
+          <a
+            href="https://github.com/superdtf-0882/ai-native-sdlc-maturity-model"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 right-6 text-xs text-dim hover:text-brass transition-colors"
+          >
+            AI-Native SDLC Maturity Model © 2026 David Facer CC BY 4.0
+          </a>
         </main>
       );
     }

@@ -29,7 +29,7 @@ export default function DiagnosticForm() {
         setErrorMsg(data.error || "Something went wrong.");
         return;
       }
-      window.location.href = `/diagnostic/?hash=${data.hash}`;
+      window.location.href = `/executivereadout/?hash=${data.hash}`;
     } catch {
       setStatus("error");
       setErrorMsg("Network error — please try again.");
@@ -73,11 +73,20 @@ export default function DiagnosticForm() {
           type="button"
           onClick={handleSubmit}
           disabled={!mdText.trim() || status === "submitting"}
-          className="px-4 py-2 rounded-md text-sm font-medium bg-[#7B61FF] text-white hover:bg-[#6a4fe0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded-md text-sm font-medium bg-[#926318] text-white hover:bg-[#7a5314] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {status === "submitting" ? "Generating…" : "Generate Executive Readout"}
         </button>
       </div>
+
+      <a
+        href="https://github.com/superdtf-0882/ai-native-sdlc-maturity-model"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 text-xs text-dim hover:text-brass transition-colors"
+      >
+        AI-Native SDLC Maturity Model © 2026 David Facer CC BY 4.0
+      </a>
     </main>
   );
 }
