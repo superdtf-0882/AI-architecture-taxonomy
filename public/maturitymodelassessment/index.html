@@ -130,6 +130,10 @@
           style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#1D9E75;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
           Download .md
         </button>
+        <button id="diagnostic-btn" onclick="tryDiagnostic()" disabled
+          style="padding:8px 20px;border-radius:8px;font-size:13.5px;font-weight:500;font-family:'Inter',system-ui,sans-serif;background:#7B61FF;color:white;border:none;opacity:0.32;cursor:not-allowed;transition:opacity 0.2s,cursor 0.2s;white-space:nowrap;">
+          Try Our Diagnostic →
+        </button>
       </div>
 
     </div>
@@ -470,19 +474,20 @@ function renderProgress() {
   const pct = (count / 13) * 100;
   document.getElementById('progress-bar').style.width = pct + '%';
   document.getElementById('progress-label').textContent = count + ' / 13';
-  const btn = document.getElementById('download-btn');
-  if (count === 13) {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
-  } else {
-    btn.disabled = true;
-    btn.style.opacity = '0.32';
-    btn.style.cursor = 'not-allowed';
-  }
+  [document.getElementById('download-btn'), document.getElementById('diagnostic-btn')].forEach(btn => {
+    if (count === 13) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+    } else {
+      btn.disabled = true;
+      btn.style.opacity = '0.32';
+      btn.style.cursor = 'not-allowed';
+    }
+  });
 }
 
-function downloadMd() {
+function buildAssessmentMd() {
   const scored = Object.keys(scores).length;
   const avg = (DIMS.reduce((s, d) => s + (scores[d.id] ? SCORE_MAP[scores[d.id]] : 0), 0) / 13).toFixed(1);
   const date = new Date().toISOString().split('T')[0];
@@ -546,11 +551,45 @@ function downloadMd() {
   md += `*AI-Native SDLC Maturity Model © 2026 David Facer — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)*\n`;
   md += `*Full model: https://github.com/superdtf-0882/ai-native-sdlc-maturity-model*\n`;
 
+  return md;
+}
+
+function downloadMd() {
   const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([md], { type: 'text/markdown' })),
+    href: URL.createObjectURL(new Blob([buildAssessmentMd()], { type: 'text/markdown' })),
     download: 'sdlc-maturity-assessment.md'
   });
   a.click();
+}
+
+async function tryDiagnostic() {
+  const btn = document.getElementById('diagnostic-btn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.style.cursor = 'not-allowed';
+  btn.textContent = 'Generating…';
+
+  try {
+    const res = await fetch('/api/diagnostic/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ md: buildAssessmentMd() })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Something went wrong generating the readout.');
+      btn.disabled = false;
+      btn.style.cursor = 'pointer';
+      btn.textContent = originalLabel;
+      return;
+    }
+    window.location.href = `/diagnostic/?hash=${data.hash}`;
+  } catch (err) {
+    alert('Network error — please try again.');
+    btn.disabled = false;
+    btn.style.cursor = 'pointer';
+    btn.textContent = originalLabel;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
