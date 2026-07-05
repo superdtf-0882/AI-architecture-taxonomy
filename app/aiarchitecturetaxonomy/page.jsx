@@ -119,7 +119,7 @@ export default function Home() {
             type="button"
             onClick={handleAddToCommunity}
             disabled={!hasScoredEntry}
-            className="px-4 py-2 rounded-md text-sm font-medium bg-[#277eb8] text-white hover:bg-[#1f6493] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium bg-[#185FA5] text-white hover:bg-[#134a82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {addState === "added" ? "Added ✓" : "Add to community chart"}
           </button>
@@ -142,7 +142,7 @@ export default function Home() {
             <LegendItem color="#BA7517" label="Navigator" />
             <LegendItem color="#E24B4A" label="Autopilot" />
             <LegendItem color="#185FA5" label="Your entry" outline />
-            <LegendItem color="#277eb8" label="Community entries" />
+            <LegendItem color="#7B61FF" label="Community entries" />
           </div>
         </section>
       </div>
