@@ -58,6 +58,7 @@ export default function Home() {
       const refreshed = await fetch("/api/entries/").then((r) => r.json());
       setCommunityEntries(refreshed.entries || []);
       setAddState("added");
+      setProductName("");
       setTimeout(() => setAddState("idle"), 2000);
     }
   }
