@@ -1,0 +1,10 @@
+# Normalize line endings. core.autocrlf is true at SYSTEM scope on this
+# machine (Git for Windows installer default), which nobody chose. This
+# repo serves aisdlc.davidfacer.com and carries the routes the corpus
+# records for A2, A4 and A10, so its diffs are read to settle questions
+# about what those URLs do -- churn here obscures exactly that.
+# Added 2026-09-16.
+#
+# The index is LF throughout (0 files at i/crlf, measured), so this is
+# purely additive and no normalization commit is needed.
+* text=auto
